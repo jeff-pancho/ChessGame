@@ -13,7 +13,7 @@ public class Game extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         Canvas canvas = new Canvas(WIDTH, HEIGHT);
-        Board board = new Board(canvas.getGraphicsContext2D());
+        Board board = new Board(canvas);
         Player[] players = {new Player(), new Player()};
         
         Group root = new Group(canvas);

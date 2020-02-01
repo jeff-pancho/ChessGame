@@ -12,6 +12,8 @@ public abstract class ChessPiece {
         this.column = column;
     }
     
+//    abstract void setPos(int row, int column);
+    
     public int getRow() {
         return this.row;
     }

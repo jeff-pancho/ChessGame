@@ -4,8 +4,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
+import javafx.event.EventHandler;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
 import main.chesspiece.Bishop;
@@ -17,14 +20,20 @@ import main.chesspiece.Rook;
 
 public class Board {
     private ArrayList<ChessPiece> pieces;
+    private Canvas canvas;
     private GraphicsContext gc;
+    private EventHandler<MouseEvent> eventHandler;
     
     public static Image bKing, bQueen, bRook, bBishop, bKnight, bPawn
                         , wKing, wQueen, wRook, wBishop, wKnight, wPawn;
     
-    Board(GraphicsContext gc) throws FileNotFoundException {
-        this.gc = gc;
+    Board(Canvas canvas) throws FileNotFoundException {
+        this.canvas = new Canvas();
+        this.gc = canvas.getGraphicsContext2D();
         this.pieces = new ArrayList<ChessPiece>();
+        
+        canvas.setOnMouseClicked(this::handle);
+        
         initImages();
     }
     
@@ -38,6 +47,12 @@ public class Board {
         }
         for(ChessPiece c : pieces)
             gc.drawImage(c.getImg(), c.getRow() * 100, c.getColumn() * 100);
+    }
+    
+    public void handle(MouseEvent e) {
+        int row = (int) e.getSceneY() / 100;
+        int column = (int) e.getSceneX() / 100;
+        System.out.println("Row: " + row + ", Column: " + column);
     }
     
     public void initPieces() {

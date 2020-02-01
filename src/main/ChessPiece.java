@@ -7,10 +7,9 @@ public abstract class ChessPiece {
     protected int column;
     protected Image img;
     
-    ChessPiece(int row, int column, Image img) {
+    public ChessPiece(int row, int column) {
         this.row = row;
         this.column = column;
-        this.img = img;
     }
     
     public int getRow() {

@@ -10,7 +10,6 @@ public class Game extends Application {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 800;
     
-    
     @Override
     public void start(Stage stage) throws Exception {
         Canvas canvas = new Canvas(WIDTH, HEIGHT);

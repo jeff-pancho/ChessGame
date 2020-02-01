@@ -13,6 +13,10 @@ public abstract class ChessPiece {
     }
     
 //    abstract void setPos(int row, int column);
+    public void setPos(int row, int column) {
+        this.row = row;
+        this.column = column;
+    }
     
     public int getRow() {
         return this.row;

@@ -20,9 +20,9 @@ import main.chesspiece.Rook;
 
 public class Board {
     private ArrayList<ChessPiece> pieces;
+    private ChessPiece curPiece;
     private Canvas canvas;
     private GraphicsContext gc;
-    private EventHandler<MouseEvent> eventHandler;
     
     public static Image bKing, bQueen, bRook, bBishop, bKnight, bPawn
                         , wKing, wQueen, wRook, wBishop, wKnight, wPawn;
@@ -38,6 +38,7 @@ public class Board {
     }
     
     public void renderBoard() {
+        gc.clearRect(0, 0, Game.WIDTH, Game.HEIGHT);
         Color dark = Color.rgb(93, 100, 110);
         for(int y = 0; y < 8; y++) {
             for(int x = 0; x < 8; x++) {
@@ -46,27 +47,43 @@ public class Board {
             }
         }
         for(ChessPiece c : pieces)
-            gc.drawImage(c.getImg(), c.getRow() * 100, c.getColumn() * 100);
+            gc.drawImage(c.getImg(), c.getColumn() * 100, c.getRow() * 100);
     }
     
-    public void handle(MouseEvent e) {
+    private void handle(MouseEvent e) {
         int row = (int) e.getSceneY() / 100;
         int column = (int) e.getSceneX() / 100;
-        System.out.println("Row: " + row + ", Column: " + column);
+        
+        if(curPiece == null)
+            curPiece = getPiece(row, column);
+        else {
+            curPiece.setPos(row, column);
+            curPiece = null;
+            renderBoard();
+        }
+    }
+    
+    private ChessPiece getPiece(int row, int column) {
+        for(ChessPiece c : pieces)
+            if(c.getRow() == row && c.getColumn() == column) {
+                System.out.println("FOUND");
+                return c;
+            }
+        return null;
     }
     
     public void initPieces() {
         for(int i = 0; i < 2; i++) {
             for(int x = 0; x < 8; x++)
-                pieces.add(new Pawn(x, 1 + 5 * i, i));
+                pieces.add(new Pawn(1 + 5 * i, x, i));
             for(int j = 0; j < 2; j++)
-                pieces.add(new Rook(7 * j, 7 * i, i));
+                pieces.add(new Rook(7 * i, 7 * j, i));
             for(int j = 0; j < 2; j++)
-                pieces.add(new Knight(1 + 5 * j, 7 * i, i));
+                pieces.add(new Knight(7 * i, 1 + 5 * j, i));
             for(int j = 0; j < 2; j++)
-                pieces.add(new Bishop(2 + 3 * j, 7 * i, i));
-            pieces.add(new Queen(3, 7 * i, i));
-            pieces.add(new King(4, 7 * i, i));
+                pieces.add(new Bishop(7 * i, 2 + 3 * j, i));
+            pieces.add(new Queen(7 * i, 3, i));
+            pieces.add(new King(7 * i, 4, i));
         }
     }
     

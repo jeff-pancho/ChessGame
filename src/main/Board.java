@@ -29,28 +29,29 @@ public class Board {
     }
     
     public void renderBoard() {
+        Color dark = Color.rgb(93, 100, 110);
         for(int y = 0; y < 8; y++) {
             for(int x = 0; x < 8; x++) {
-                gc.setFill((x + y) % 2 == 0 ? Color.WHITE : Color.SADDLEBROWN);
+                gc.setFill((x + y) % 2 == 0 ? Color.WHITE : dark);
                 gc.fillRect(100 * x, 100 * y, 100, 100);
             }
         }
         for(ChessPiece c : pieces)
-            gc.drawImage(c.getImg(), c.getRow(), c.getColumn());
+            gc.drawImage(c.getImg(), c.getRow() * 100, c.getColumn() * 100);
     }
     
     public void initPieces() {
         for(int i = 0; i < 2; i++) {
             for(int x = 0; x < 8; x++)
-                pieces.add(new Pawn(x * 100, 100 + 500 * i, i));
+                pieces.add(new Pawn(x, 1 + 5 * i, i));
             for(int j = 0; j < 2; j++)
-                pieces.add(new Rook(700 * j, 700 * i, i));
+                pieces.add(new Rook(7 * j, 7 * i, i));
             for(int j = 0; j < 2; j++)
-                pieces.add(new Knight(100 + 500 * j, 700 * i, i));
+                pieces.add(new Knight(1 + 5 * j, 7 * i, i));
             for(int j = 0; j < 2; j++)
-                pieces.add(new Bishop(200 + 300 * j, 700 * i, i));
-            pieces.add(new Queen(300, 700 * i, i));
-            pieces.add(new King(400, 700 * i, i));
+                pieces.add(new Bishop(2 + 3 * j, 7 * i, i));
+            pieces.add(new Queen(3, 7 * i, i));
+            pieces.add(new King(4, 7 * i, i));
         }
     }
     

@@ -54,21 +54,26 @@ public class Board {
         int row = (int) e.getSceneY() / 100;
         int column = (int) e.getSceneX() / 100;
         
-        if(curPiece == null)
-            curPiece = getPiece(row, column);
-        else {
+        if(curPiece == null) {
+            if((curPiece = getPiece(row, column)) != null)
+                drawMarker(row, column);
+        } else {
             curPiece.setPos(row, column);
             curPiece = null;
             renderBoard();
         }
     }
     
+    private void drawMarker(int row, int column) {
+        gc.setStroke(Color.BLUE);
+        gc.setLineWidth(4.0);
+        gc.strokeRect(100 * column, 100 * row, 100, 100);
+    }
+    
     private ChessPiece getPiece(int row, int column) {
         for(ChessPiece c : pieces)
-            if(c.getRow() == row && c.getColumn() == column) {
-                System.out.println("FOUND");
+            if(c.getRow() == row && c.getColumn() == column)
                 return c;
-            }
         return null;
     }
     

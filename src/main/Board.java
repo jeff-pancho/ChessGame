@@ -25,7 +25,7 @@ public class Board {
     public void renderBoard() {
         for(int y = 0; y < 8; y++) {
             for(int x = 0; x < 8; x++) {
-                gc.setFill((x + y) % 2 == 0 ? Color.SADDLEBROWN : Color.WHITE);
+                gc.setFill((x + y) % 2 == 0 ? Color.WHITE : Color.SADDLEBROWN);
                 gc.fillRect(100 * x, 100 * y, 100, 100);
             }
         }

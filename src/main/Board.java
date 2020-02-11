@@ -19,7 +19,8 @@ import main.chesspiece.Queen;
 import main.chesspiece.Rook;
 
 public class Board {
-    private ArrayList<ChessPiece> pieces;
+//    private ArrayList<ChessPiece> pieces;
+    private ChessPiece[][] pieces;
     private ChessPiece curPiece;
     private Canvas canvas;
     private GraphicsContext gc;
@@ -30,7 +31,8 @@ public class Board {
     Board(Canvas canvas) throws FileNotFoundException {
         this.canvas = new Canvas();
         this.gc = canvas.getGraphicsContext2D();
-        this.pieces = new ArrayList<ChessPiece>();
+//        this.pieces = new ArrayList<ChessPiece>();
+        this.pieces = new ChessPiece[8][8];
         
         canvas.setOnMouseClicked(this::handle);
         
@@ -46,8 +48,10 @@ public class Board {
                 gc.fillRect(100 * x, 100 * y, 100, 100);
             }
         }
-        for(ChessPiece c : pieces)
-            gc.drawImage(c.getImg(), c.getColumn() * 100, c.getRow() * 100);
+        for(ChessPiece[] pieceRow : pieces)
+            for(ChessPiece piece : pieceRow)
+                if(piece != null)
+                    gc.drawImage(piece.getImg(), piece.getColumn() * 100, piece.getRow() * 100);
     }
     
     private void handle(MouseEvent e) {
@@ -55,10 +59,10 @@ public class Board {
         int column = (int) e.getSceneX() / 100;
         
         if(curPiece == null) {
-            if((curPiece = getPiece(row, column)) != null)
+            if((curPiece = pieces[row][column]) != null)
                 drawMarker(row, column);
         } else {
-            curPiece.setPos(row, column);
+            curPiece.setPos(row, column, pieces);
             curPiece = null;
             renderBoard();
         }
@@ -70,41 +74,43 @@ public class Board {
         gc.strokeRect(100 * column, 100 * row, 100, 100);
     }
     
+    /*
     private ChessPiece getPiece(int row, int column) {
         for(ChessPiece c : pieces)
             if(c.getRow() == row && c.getColumn() == column)
                 return c;
         return null;
     }
+    */
     
     public void initPieces() {
         for(int i = 0; i < 2; i++) {
             for(int x = 0; x < 8; x++)
-                pieces.add(new Pawn(1 + 5 * i, x, i));
+                pieces[1 + 5 * i][x] = new Pawn(1 + 5 * i, x, i);
             for(int j = 0; j < 2; j++)
-                pieces.add(new Rook(7 * i, 7 * j, i));
+                pieces[7 * i][7 * j] = new Rook(7 * i, 7 * j, i);
             for(int j = 0; j < 2; j++)
-                pieces.add(new Knight(7 * i, 1 + 5 * j, i));
+                pieces[7 * i][1 + 5 * j] = new Knight(7 * i, 1 + 5 * j, i);
             for(int j = 0; j < 2; j++)
-                pieces.add(new Bishop(7 * i, 2 + 3 * j, i));
-            pieces.add(new Queen(7 * i, 3, i));
-            pieces.add(new King(7 * i, 4, i));
+                pieces[7 * i][2 + 3 * j] = new Bishop(7 * i, 2 + 3 * j, i);
+            pieces[7 * i][3] = new Queen(7 * i, 3, i);
+            pieces[7 * i][4] = new King(7 * i, 4, i);
         }
     }
     
     private void initImages() throws FileNotFoundException {
-        bKing = new Image(new FileInputStream("./img/bKing.png"));
-        bQueen = new Image(new FileInputStream("./img/bQueen.png"));
-        bRook = new Image(new FileInputStream("./img/bRook.png"));
-        bBishop = new Image(new FileInputStream("./img/bBishop.png"));
-        bKnight = new Image(new FileInputStream("./img/bKnight.png"));
-        bPawn = new Image(new FileInputStream("./img/bPawn.png"));
+        bKing = new Image("file:./img/bKing.png");
+        bQueen = new Image("file:./img/bQueen.png");
+        bRook = new Image("file:./img/bRook.png");
+        bBishop = new Image("file:./img/bBishop.png");
+        bKnight = new Image("file:./img/bKnight.png");
+        bPawn = new Image("file:./img/bPawn.png");
         
-        wKing = new Image(new FileInputStream("./img/wKing.png"));
-        wQueen = new Image(new FileInputStream("./img/wQueen.png"));
-        wRook = new Image(new FileInputStream("./img/wRook.png"));
-        wBishop = new Image(new FileInputStream("./img/wBishop.png"));
-        wKnight = new Image(new FileInputStream("./img/wKnight.png"));
-        wPawn = new Image(new FileInputStream("./img/wPawn.png"));
+        wKing = new Image("file:./img/wKing.png");
+        wQueen = new Image("file:./img/wQueen.png");
+        wRook = new Image("file:./img/wRook.png");
+        wBishop = new Image("file:./img/wBishop.png");
+        wKnight = new Image("file:./img/wKnight.png");
+        wPawn = new Image("file:./img/wPawn.png");
     }
 }

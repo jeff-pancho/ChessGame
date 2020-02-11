@@ -14,6 +14,7 @@ public class Bishop extends ChessPiece {
         // TODO Auto-generated method stub
         boolean[][] validMove = new boolean[8][8];
         
+        
         return validMove;
     }
 }

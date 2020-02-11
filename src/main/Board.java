@@ -22,6 +22,7 @@ public class Board {
 //    private ArrayList<ChessPiece> pieces;
     private ChessPiece[][] pieces;
     private ChessPiece curPiece;
+    private boolean[][] validMoves;
     private Canvas canvas;
     private GraphicsContext gc;
     
@@ -59,19 +60,33 @@ public class Board {
         int column = (int) e.getSceneX() / 100;
         
         if(curPiece == null) {
-            if((curPiece = pieces[row][column]) != null)
-                drawMarker(row, column);
-        } else {
+            if((curPiece = pieces[row][column]) != null) {
+                validMoves = curPiece.calcMoves(pieces);
+                drawMarkers(row, column);
+                System.out.println(curPiece.getClass().getName());
+            }
+        } else if(validMoves[row][column]) {
             curPiece.setPos(row, column, pieces);
+            curPiece = null;
+            renderBoard();
+        } else {
             curPiece = null;
             renderBoard();
         }
     }
     
-    private void drawMarker(int row, int column) {
+    private void drawMarkers(int row, int column) {
         gc.setStroke(Color.BLUE);
         gc.setLineWidth(4.0);
         gc.strokeRect(100 * column, 100 * row, 100, 100);
+        
+        gc.setStroke(Color.DARKORCHID);
+        
+        for(int y = 0; y < validMoves.length; y++) {
+            for(int x = 0; x < validMoves[y].length; x++)
+                if(validMoves[y][x])
+                    gc.strokeRect(100 * x, 100 * y, 100, 100);
+        }
     }
     
     /*

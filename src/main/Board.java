@@ -25,6 +25,7 @@ public class Board {
     private boolean[][] validMoves;
     private Canvas canvas;
     private GraphicsContext gc;
+    private int curPlayer = 1;
     
     public static Image bKing, bQueen, bRook, bBishop, bKnight, bPawn
                         , wKing, wQueen, wRook, wBishop, wKnight, wPawn;
@@ -58,17 +59,21 @@ public class Board {
     private void handle(MouseEvent e) {
         int row = (int) e.getSceneY() / 100;
         int column = (int) e.getSceneX() / 100;
+        System.out.println(curPlayer);
         
         if(curPiece == null) {
-            if((curPiece = pieces[row][column]) != null) {
+            if((curPiece = pieces[row][column]) != null && curPiece.getPlayerNum() == curPlayer) {
+                System.out.println(curPiece);
                 validMoves = curPiece.calcMoves(pieces);
                 drawMarkers(row, column);
                 System.out.println(curPiece.getClass().getName());
-            }
+            } else
+                curPiece = null;
         } else if(validMoves[row][column]) {
             curPiece.setPos(row, column, pieces);
             curPiece = null;
             renderBoard();
+            curPlayer = (curPlayer + 1) % 2;
         } else {
             curPiece = null;
             renderBoard();

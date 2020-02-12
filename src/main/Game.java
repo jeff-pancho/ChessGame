@@ -14,7 +14,7 @@ public class Game extends Application {
     public void start(Stage stage) throws Exception {
         Canvas canvas = new Canvas(WIDTH, HEIGHT);
         Board board = new Board(canvas);
-        Player[] players = {new Player(), new Player()};
+        Player[] players = {new Player(0), new Player(1)};
         
         Group root = new Group(canvas);
         Scene scene = new Scene(root, WIDTH, HEIGHT);

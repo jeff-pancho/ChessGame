@@ -40,6 +40,10 @@ public abstract class ChessPiece {
         return this.column;
     }
     
+    public int getPlayerNum() {
+        return this.playerNum;
+    }
+    
     public Image getImg() {
         return this.img;
     }

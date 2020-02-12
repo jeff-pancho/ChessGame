@@ -13,34 +13,21 @@ public class Rook extends ChessPiece {
     public boolean[][] calcMoves(ChessPiece[][] pieces) {
         // TODO Auto-generated method stub
         boolean[][] validMove = new boolean[8][8];
-        boolean isLeftOccupied = false;
-        boolean isRightOccupied = false;
-        boolean isUpOccupied = false;
-        boolean isDownOccupied = false;
+        boolean[] occupied = new boolean[4];
         
         for(int i = 1; i < 8; i++) {
-            if(!isPastBoundary(column - i) && !isLeftOccupied)
-                if(!isOccupied(pieces, row, column - i))
-                    validMove[row][column - i] = true;
+            for(int j = 0; j < occupied.length; j++) {
+                double dir = Math.PI / 2 * j;
+                int newRow = (int) Math.round(row + i * Math.sin(dir));
+                int newColumn = (int) Math.round(column + i * Math.cos(dir));
+                if(!isPastBoundary(newRow, newColumn) && !occupied[j])
+                    if(!isOccupied(pieces, newRow, newColumn))
+                        validMove[newRow][newColumn] = true;
                 else
-                    isLeftOccupied = true;
-            if(!isPastBoundary(column + i) && !isRightOccupied)
-                if(!isOccupied(pieces, row, column + i))
-                    validMove[row][column + i] = true;
-                else
-                    isRightOccupied = true;
-            if(!isPastBoundary(row - i) && !isUpOccupied)
-                if(!isOccupied(pieces, row - i, column))
-                    validMove[row - i][column] = true;
-                else
-                    isUpOccupied = true;
-            if(!isPastBoundary(row + i) && !isDownOccupied)
-                if(!isOccupied(pieces, row + i, column))
-                    validMove[row + i][column] = true;
-                else
-                    isDownOccupied = true;
-            
+                    occupied[j] = true;
+            }
         }
+        
         validMove[row][column] = false;
         return validMove;
     }

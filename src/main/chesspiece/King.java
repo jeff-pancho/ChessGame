@@ -14,6 +14,14 @@ public class King extends ChessPiece {
         // TODO Auto-generated method stub
         boolean[][] validMove = new boolean[8][8];
         
+        for(int i = 0; i < 8; i++) {
+            double dir = Math.PI / 4 * i;
+            int newRow = (int) Math.round(row + Math.sin(dir));
+            int newColumn = (int) Math.round(column + Math.cos(dir));
+            if(!isPastBoundary(newRow, newColumn) && !isOccupied(pieces, newRow, newColumn))
+                validMove[newRow][newColumn] = true;
+        }
+        
         return validMove;
     }
 }

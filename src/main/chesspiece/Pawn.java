@@ -20,7 +20,7 @@ public class Pawn extends ChessPiece {
         int newRow = row;
         for(int i = 0; i < 1 + num; i++) {
             newRow += playerNum * -2 + 1;
-            if(!isPastBoundary(newRow) && !isOccupied(pieces, newRow, column))
+            if(!isPastBoundary(newRow, column) && !isOccupied(pieces, newRow, column))
                 validMove[newRow][column] = true;
             else
                 break;

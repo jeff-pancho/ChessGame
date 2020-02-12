@@ -24,8 +24,8 @@ public abstract class ChessPiece {
     
     public abstract boolean[][] calcMoves(ChessPiece[][] pieces);
     
-    protected boolean isPastBoundary(int num) {
-        return num < 0 || num > 7;
+    protected boolean isPastBoundary(int row, int column) {
+        return row < 0 || row > 7 || column < 0 || column > 7;
     }
     
     protected boolean isOccupied(ChessPiece[][] pieces, int row, int column) {

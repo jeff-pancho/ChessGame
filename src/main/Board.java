@@ -76,27 +76,16 @@ public class Board {
     }
     
     private void drawMarkers(int row, int column) {
-        gc.setStroke(Color.BLUE);
-        gc.setLineWidth(4.0);
-        gc.strokeRect(100 * column, 100 * row, 100, 100);
-        
         gc.setStroke(Color.DARKORCHID);
-        
+        gc.setLineWidth(4.0);
         for(int y = 0; y < validMoves.length; y++) {
             for(int x = 0; x < validMoves[y].length; x++)
                 if(validMoves[y][x])
                     gc.strokeRect(100 * x, 100 * y, 100, 100);
         }
+        gc.setStroke(Color.BLUE);
+        gc.strokeRect(100 * column, 100 * row, 100, 100);
     }
-    
-    /*
-    private ChessPiece getPiece(int row, int column) {
-        for(ChessPiece c : pieces)
-            if(c.getRow() == row && c.getColumn() == column)
-                return c;
-        return null;
-    }
-    */
     
     public void initPieces() {
         for(int i = 0; i < 2; i++) {

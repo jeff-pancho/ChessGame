@@ -2,6 +2,7 @@ package main;
 
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
+import main.chesspiece.ChessPiece;
 
 public class Board3D {
     public static final int NUM_BOARDS = 3;
@@ -13,6 +14,9 @@ public class Board3D {
         for (int i = 0; i < NUM_BOARDS; i++) {
             boards[i] = new Board(i);
         }
+        
+        boards[0].initPieces(Player.WHITE);
+        boards[2].initPieces(Player.BLACK);
     }
     
     public HBox getHBox() {
@@ -25,6 +29,10 @@ public class Board3D {
         }
         
         return box;
+    }
+    
+    public ChessPiece[][] getPieces(int i) {
+        return boards[i].getPieces();
     }
     
     public void render() {

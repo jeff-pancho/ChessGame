@@ -13,11 +13,25 @@ public class Game extends Application {
         Board3D board = new Board3D();
         Scene scene = new Scene(board.getHBox(), WIDTH, HEIGHT);
         
-        stage.setScene(scene);
-        stage.setTitle("ChessGame");
-        stage.show();
+        initStage(stage, scene);
+        initBoards(board);
         
         board.render();
+    }
+    
+    private void initBoards(Board3D board) {
+        
+    }
+    
+    private void initStage(Stage stage, Scene scene) {
+        stage.setScene(scene);
+        stage.setTitle("ChessGame");
+        stage.setResizable(false);
+//        stage.setMaxWidth(WIDTH);
+//        stage.setMaxWidth(WIDTH);
+//        stage.setMaxHeight(HEIGHT);
+//        stage.setMinHeight(HEIGHT);
+        stage.show();
     }
     
     public void run() {

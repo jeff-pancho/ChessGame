@@ -84,19 +84,27 @@ public class Board extends Canvas {
     public void initPieces(Player player) {
         int i = player.ordinal();
         for(int x = 0; x < 8; x++)
-            pieces[1 + 5 * i][x] = new Pawn(1 + 5 * i, x, player);
+            pieces[1 + 5 * i][x] = new Pawn(1 + 5 * i, x, z, player);
         for(int j = 0; j < 2; j++)
-            pieces[7 * i][7 * j] = new Rook(7 * i, 7 * j, player);
+            pieces[7 * i][7 * j] = new Rook(7 * i, 7 * j, z, player);
         for(int j = 0; j < 2; j++)
-            pieces[7 * i][1 + 5 * j] = new Knight(7 * i, 1 + 5 * j, player);
+            pieces[7 * i][1 + 5 * j] = new Knight(7 * i, 1 + 5 * j, z, player);
         for(int j = 0; j < 2; j++)
-            pieces[7 * i][2 + 3 * j] = new Bishop(7 * i, 2 + 3 * j, player);
-        pieces[7 * i][3] = new Queen(7 * i, 3, player);
-        pieces[7 * i][4] = new King(7 * i, 4, player);
+            pieces[7 * i][2 + 3 * j] = new Bishop(7 * i, 2 + 3 * j, z, player);
+        pieces[7 * i][3] = new Queen(7 * i, 3, z, player);
+        pieces[7 * i][4] = new King(7 * i, 4, z, player);
+    }
+    
+    public int getZ() {
+        return this.z;
     }
     
     public ChessPiece[][] getPieces() {
         return this.pieces;
+    }
+    
+    public ChessPiece getPiece(int row, int col) {
+        return this.pieces[row][col];
     }
     
     private static void initImages() {

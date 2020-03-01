@@ -31,6 +31,10 @@ public class Board3D {
         return box;
     }
     
+    public Board[] getBoards() {
+        return boards;
+    }
+    
     public Board getBoard(int i) {
         return boards[i];
     }

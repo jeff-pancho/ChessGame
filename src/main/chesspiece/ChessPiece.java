@@ -10,17 +10,19 @@ public abstract class ChessPiece {
     protected Image img;
     protected Player player;
     
-    public ChessPiece(int row, int col, Player player) {
+    public ChessPiece(int row, int col, int z, Player player) {
         this.row = row;
         this.col = col;
+        this.z = z;
         this.player = player;
     }
     
-    public void setPos(int row, int col, ChessPiece[][] pieces) {
-        pieces[this.row][this.col] = null;
+    public void setPos(int row, int col, int z, ChessPiece[][] lastBoard, ChessPiece[][] newBoard) {
+        lastBoard[this.row][this.col] = null;
         this.row = row;
         this.col = col;
-        pieces[row][col] = this;
+        this.z = z;
+        newBoard[row][col] = this;
     }
     
     public abstract boolean[][] calcMoves();
@@ -39,6 +41,10 @@ public abstract class ChessPiece {
     
     public int getCol() {
         return this.col;
+    }
+    
+    public int getZ() {
+        return this.z;
     }
     
     public Image getImg() {

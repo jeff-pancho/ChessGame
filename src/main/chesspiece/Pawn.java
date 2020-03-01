@@ -22,7 +22,6 @@ public class Pawn extends ChessPiece {
             int newZ = z;
             
             for (int steps = 1; steps <= numSteps; steps++) {
-                System.out.println(steps);
                 int newRow = row + direction * steps;
                 newZ += zStep;
                 if (isValid(newZ, newRow, col, pieces))

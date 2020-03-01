@@ -61,6 +61,7 @@ public class Game extends Application {
             validMoves = new boolean[3][8][8];
             board3d.render();
             srcBoard.renderMouseLocation(row, col);
+            srcBoard.renderPieces();
         }
     }
     
@@ -77,13 +78,15 @@ public class Game extends Application {
         int row = (int) e.getY() / Board.RECT_SIZE;
         int col = (int) e.getX() / Board.RECT_SIZE;
         
+        srcBoard.renderTiles();
         srcBoard.renderMouseLocation(row, col);
         srcBoard.renderValidMoves(validMoves[srcBoard.getZ()]);
         
         if (curPiece != null) {
             Board curBoard = board3d.getBoard(curPiece.getZ());
             curBoard.renderSelect(curPiece.getRow(), curPiece.getCol());
-            curBoard.renderPiece(curPiece.getRow(), curPiece.getCol());
+            if (curBoard != srcBoard)
+                curBoard.renderPiece(curPiece.getRow(), curPiece.getCol());
         }
         
         srcBoard.renderPieces();
@@ -98,7 +101,8 @@ public class Game extends Application {
         if (curPiece != null) {
             Board curBoard = board3d.getBoard(curPiece.getZ());
             curBoard.renderSelect(curPiece.getRow(), curPiece.getCol());
-            curBoard.renderPiece(curPiece.getRow(), curPiece.getCol());
+            if (curBoard != srcBoard)
+                curBoard.renderPiece(curPiece.getRow(), curPiece.getCol());
         }
         
         srcBoard.renderPieces();

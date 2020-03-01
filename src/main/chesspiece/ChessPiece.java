@@ -25,7 +25,15 @@ public abstract class ChessPiece {
         pieces[z][row][col] = this;
     }
     
-    public abstract boolean[][] calcMoves();
+//    public abstract boolean[][] calcMoves();
+    public boolean[][][] calcMoves(ChessPiece[][][] pieces) {
+        boolean[][][] validMoves = new boolean[3][8][8];
+        for (boolean[][] z : validMoves)
+            for (boolean[] y : z)
+                for (int i = 0; i < 8; i++)
+                    y[i] = true;
+        return validMoves;
+    }
     
     protected boolean isPastBoundary(int z, int row, int col) {
         return row < 0 || row > 7 || col < 0 || col > 7 || z < 0 || z > 2;

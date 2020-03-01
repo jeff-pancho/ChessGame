@@ -24,7 +24,7 @@ public class Board3D {
     }
     
     public HBox getHBox() {
-        HBox box = new HBox();
+        HBox box = new HBox(8);
         box.setPrefSize(Game.WIDTH, Game.HEIGHT);
         box.setAlignment(Pos.CENTER);
         

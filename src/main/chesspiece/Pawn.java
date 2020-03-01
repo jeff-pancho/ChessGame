@@ -10,12 +10,6 @@ public class Pawn extends ChessPiece {
         super(z, row, col, player);
         this.img = player == Player.WHITE ? Board.wPawn : Board.bPawn;
     }
-
-    @Override
-    public boolean[][] calcMoves() {
-        // TODO Auto-generated method stub
-        return null;
-    }
     
 //    @Override
 //    public void setPos(int row, int col, ChessPiece[][] lastBoard, ChessPiece[][] newBoard) {

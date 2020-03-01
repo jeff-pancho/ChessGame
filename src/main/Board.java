@@ -13,15 +13,16 @@ import main.chesspiece.Queen;
 import main.chesspiece.Rook;
 
 public class Board extends Canvas {
-    public static final int RECT_SIZE = 75;
+    public static final int RECT_SIZE = 50;
     public static final int LENGTH = RECT_SIZE * 8;
     public static final int BORDER_SIZE = 8;
     
     public static final Color DARK = Color.rgb(90, 100, 110);
-    public static final Color LIGHT = Color.rgb(255, 255, 255);
+    public static final Color LIGHT = Color.rgb(200, 210, 220);
     public static final Color BORDER = Color.rgb(0, 0, 0);
-    public static final Color MOUSE = Color.rgb(60, 60, 90);
+    public static final Color MOUSE = Color.rgb(60, 60, 90, 0.9);
     public static final Color SELECT = Color.rgb(180, 50, 50);
+    public static final Color VALID = Color.rgb(200, 140, 220, 0.5);
     
     public static Image bKing, bQueen, bRook, bBishop, bKnight, bPawn
         , wKing, wQueen, wRook, wBishop, wKnight, wPawn;
@@ -46,36 +47,36 @@ public class Board extends Canvas {
         
     }
     
+    public void renderBoard() {
+        renderTiles();
+        renderPieces();
+    }
+    
     public void renderMouseLocation(int row, int col) {
         renderTiles();
-        
         gc.setFill(MOUSE);
-        gc.fillRect(RECT_SIZE * col, RECT_SIZE * row, RECT_SIZE, RECT_SIZE);
-        
-        renderBorder();
+        renderRect(row, col);
         renderPieces();
     }
     
     public void renderSelect(int row, int col) {
         gc.setFill(SELECT);
-//        gc.setLineWidth(BORDER_SIZE);
-        gc.fillRect(RECT_SIZE * col, RECT_SIZE * row, RECT_SIZE, RECT_SIZE);
-        renderBorder();
-//        renderPieces();
-        renderPiece(z, row, col);
+        renderRect(row, col);
     }
     
-    public void renderBoard() {
-        renderTiles();
-        renderBorder();
-        renderPieces();
+    public void renderValidMoves(boolean[][] validMoves) {
+        gc.setFill(VALID);
+        for (int row = 0; row < 8; row++)
+            for (int col = 0; col < 8; col++)
+                if (validMoves[row][col])
+                    renderRect(row, col);
     }
     
     public void renderTiles() {
         for (int row = 0; row < 8; row++)
             for (int col = 0; col < 8; col++) {
                 gc.setFill((row + col) % 2 == 0 ? LIGHT : DARK);
-                gc.fillRect(RECT_SIZE * col, (RECT_SIZE * row), RECT_SIZE, RECT_SIZE);
+                renderRect(row, col);
             }
     }
     
@@ -83,19 +84,17 @@ public class Board extends Canvas {
         for (ChessPiece[] pieceRow : pieces)
             for (ChessPiece piece : pieceRow)
                 if (piece != null)
-                    renderPiece(piece.getZ(), piece.getRow(), piece.getCol());
+                    renderPiece(piece.getRow(), piece.getCol());
     }
     
-    public void renderPiece(int z, int row, int col) {
+    public void renderPiece(int row, int col) {
         ChessPiece piece = pieces[row][col];
-        if (pieces != null)
+        if (piece != null)
             gc.drawImage(piece.getImg(), col * RECT_SIZE, row * RECT_SIZE);
     }
     
-    public void renderBorder() {
-        gc.setStroke(BORDER);
-        gc.setLineWidth(BORDER_SIZE);
-        gc.strokeRect(0, 0, LENGTH, LENGTH);
+    private void renderRect(int row, int col) {
+        gc.fillRect(RECT_SIZE * col, RECT_SIZE * row, RECT_SIZE, RECT_SIZE);
     }
     
     public void initPieces(Player player) {

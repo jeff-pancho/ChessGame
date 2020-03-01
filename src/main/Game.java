@@ -7,17 +7,21 @@ import javafx.stage.Stage;
 import main.chesspiece.ChessPiece;
 
 public class Game extends Application {
-    public static final int WIDTH = Board.RECT_SIZE * 24;
-    public static final int HEIGHT = Board.RECT_SIZE * 8;
+    public static final int PADDING = 8;
+    public static final int WIDTH = Board.RECT_SIZE * 24 + PADDING * 4;
+    public static final int HEIGHT = Board.RECT_SIZE * 8 + PADDING * 2;
     
     private Board3D board3d;
     
     private ChessPiece curPiece;
+    private boolean[][][] validMoves;
 
     @Override
     public void start(Stage stage) throws Exception {
         board3d = new Board3D();
-        Scene scene = new Scene(board3d.getHBox(), WIDTH, HEIGHT);
+        validMoves = new boolean[3][8][8];
+        Scene scene = new Scene(board3d.getHBox(), WIDTH, HEIGHT, Board.BORDER);
+        
         
         initStage(stage, scene);
         
@@ -30,22 +34,41 @@ public class Game extends Application {
         board3d.render();
     }
     
+    /*
+     * WARNING: EVERYTHING BELOW THIS POINT IS A BIOLOGICAL HAZARD
+     * PLEASE DON'T LOOK AT MY CODE. I'M SO SORRY MOTHER, FATHER,
+     * EVERYONE. I'LL BE OFF NOW.
+     */
+    
     private void onClick(MouseEvent e) {
         Board srcBoard = (Board) e.getSource();
         int z = srcBoard.getZ();
         int row = (int) e.getY() / Board.RECT_SIZE;
         int col = (int) e.getX() / Board.RECT_SIZE;
         
-        
         if (curPiece == null) {
-            curPiece = srcBoard.getPiece(row, col);
-            srcBoard.renderSelect(row, col);
+            if((curPiece = srcBoard.getPiece(row, col)) != null) {
+                validMoves = curPiece.calcMoves(board3d.getPieces());
+                renderValidMoves();
+                
+                srcBoard.renderSelect(row, col);
+                srcBoard.renderPiece(row, col);
+            }
         } else {
-            Board oldBoard = board3d.getBoard(curPiece.getZ());
-            curPiece.setPos(z, row, col, board3d.getPieces());
-            oldBoard.renderBoard();
-            srcBoard.renderMouseLocation(row, col);
+            if (validMoves[z][row][col])
+                curPiece.setPos(z, row, col, board3d.getPieces());
             curPiece = null;
+            validMoves = new boolean[3][8][8];
+            board3d.render();
+            srcBoard.renderMouseLocation(row, col);
+        }
+    }
+    
+    private void renderValidMoves() {
+        Board[] boards = board3d.getBoards();
+        for (int i = 0; i < Board3D.NUM_BOARDS; i++) {
+            boards[i].renderValidMoves(validMoves[i]);
+            boards[i].renderPieces();
         }
     }
     
@@ -55,18 +78,29 @@ public class Game extends Application {
         int col = (int) e.getX() / Board.RECT_SIZE;
         
         srcBoard.renderMouseLocation(row, col);
+        srcBoard.renderValidMoves(validMoves[srcBoard.getZ()]);
         
-        // Lord forgive me, for I have sinned.
         if (curPiece != null) {
             Board curBoard = board3d.getBoard(curPiece.getZ());
             curBoard.renderSelect(curPiece.getRow(), curPiece.getCol());
+            curBoard.renderPiece(curPiece.getRow(), curPiece.getCol());
         }
+        
+        srcBoard.renderPieces();
     }
     
     private void renderExitBoard(MouseEvent e) {
         Board srcBoard = (Board) e.getSource();
+        
         srcBoard.renderTiles();
-        srcBoard.renderBorder();
+        srcBoard.renderValidMoves(validMoves[srcBoard.getZ()]);
+        
+        if (curPiece != null) {
+            Board curBoard = board3d.getBoard(curPiece.getZ());
+            curBoard.renderSelect(curPiece.getRow(), curPiece.getCol());
+            curBoard.renderPiece(curPiece.getRow(), curPiece.getCol());
+        }
+        
         srcBoard.renderPieces();
     }
     

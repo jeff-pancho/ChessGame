@@ -10,10 +10,4 @@ public class King extends ChessPiece {
         this.img = player == Player.WHITE ? Board.wKing : Board.bKing;
     }
 
-    @Override
-    public boolean[][] calcMoves() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
 }

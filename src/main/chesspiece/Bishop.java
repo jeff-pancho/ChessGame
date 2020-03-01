@@ -20,14 +20,14 @@ public class Bishop extends ChessPiece {
                 
                 for (int step = 1; step < 8; step++) {
                     double dir = Math.PI / 4 + Math.PI / 2 * i;
-                    int newRow = (int) Math.round(row + step * Math.sin(dir));
-                    int newCol = (int) Math.round(col + step * Math.cos(dir));
+                    int newRow = (int) Math.round(row + step * Math.sin(dir) * Math.sqrt(2));
+                    int newCol = (int) Math.round(col + step * Math.cos(dir) * Math.sqrt(2));
                     newZ += zStep;
                     
-                    if (isValid(newZ, newRow, newCol, pieces))
+                    if (isValid(newZ, newRow, newCol, pieces)) {
                         validMoves[newZ][newRow][newCol] = true;
-                    else
-                        break;
+                    } else 
+                        break; 
                 }
             }
         }

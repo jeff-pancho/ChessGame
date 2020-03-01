@@ -12,7 +12,6 @@ public class Game extends Application {
     
     private Board3D board3d;
     
-    private Board curBoard;
     private ChessPiece curPiece;
 
     @Override
@@ -24,8 +23,8 @@ public class Game extends Application {
         
         for (Board board : board3d.getBoards()) {
             board.setOnMouseClicked(this::onClick);
-            board.setOnMouseMoved(this::renderSelect);
-            board.setOnMouseExited(this::exitBoard);
+            board.setOnMouseMoved(this::renderMouseLocation);
+            board.setOnMouseExited(this::renderExitBoard);
         }
         
         board3d.render();
@@ -40,27 +39,35 @@ public class Game extends Application {
         
         if (curPiece == null) {
             curPiece = srcBoard.getPiece(row, col);
-            System.out.println(curPiece);
+            srcBoard.renderSelect(row, col);
         } else {
             Board oldBoard = board3d.getBoard(curPiece.getZ());
-            curPiece.setPos(row, col, z, oldBoard.getPieces(), srcBoard.getPieces());
+            curPiece.setPos(z, row, col, board3d.getPieces());
             oldBoard.renderBoard();
-            srcBoard.renderSelect(row, col);
+            srcBoard.renderMouseLocation(row, col);
             curPiece = null;
         }
     }
     
-    private void renderSelect(MouseEvent e) {
+    private void renderMouseLocation(MouseEvent e) {
+        Board srcBoard = (Board) e.getSource();
         int row = (int) e.getY() / Board.RECT_SIZE;
         int col = (int) e.getX() / Board.RECT_SIZE;
         
-        Board srcBoard = (Board) e.getSource();
-        srcBoard.renderSelect(row, col);
+        srcBoard.renderMouseLocation(row, col);
+        
+        // Lord forgive me, for I have sinned.
+        if (curPiece != null) {
+            Board curBoard = board3d.getBoard(curPiece.getZ());
+            curBoard.renderSelect(curPiece.getRow(), curPiece.getCol());
+        }
     }
     
-    private void exitBoard(MouseEvent e) {
+    private void renderExitBoard(MouseEvent e) {
         Board srcBoard = (Board) e.getSource();
-        srcBoard.renderBoard();
+        srcBoard.renderTiles();
+        srcBoard.renderBorder();
+        srcBoard.renderPieces();
     }
     
     private void initStage(Stage stage, Scene scene) {

@@ -6,8 +6,8 @@ import main.Player;
 public class Pawn extends ChessPiece {
     private boolean firstMove = true;
 
-    public Pawn(int row, int col, int z, Player player) {
-        super(row, col, z, player);
+    public Pawn(int z, int row, int col, Player player) {
+        super(z, row, col, player);
         this.img = player == Player.WHITE ? Board.wPawn : Board.bPawn;
     }
 

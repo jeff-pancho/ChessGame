@@ -15,11 +15,13 @@ import main.chesspiece.Rook;
 public class Board extends Canvas {
     public static final int RECT_SIZE = 75;
     public static final int LENGTH = RECT_SIZE * 8;
+    public static final int BORDER_SIZE = 8;
     
-    public static final Color DARK = Color.rgb(93, 100, 110);
+    public static final Color DARK = Color.rgb(90, 100, 110);
     public static final Color LIGHT = Color.rgb(255, 255, 255);
     public static final Color BORDER = Color.rgb(0, 0, 0);
-    public static final Color SELECT = Color.rgb(60, 60, 90);
+    public static final Color MOUSE = Color.rgb(60, 60, 90);
+    public static final Color SELECT = Color.rgb(180, 50, 50);
     
     public static Image bKing, bQueen, bRook, bBishop, bKnight, bPawn
         , wKing, wQueen, wRook, wBishop, wKnight, wPawn;
@@ -44,14 +46,23 @@ public class Board extends Canvas {
         
     }
     
-    public void renderSelect(int row, int col) {
+    public void renderMouseLocation(int row, int col) {
         renderTiles();
         
-        gc.setFill(SELECT);
+        gc.setFill(MOUSE);
         gc.fillRect(RECT_SIZE * col, RECT_SIZE * row, RECT_SIZE, RECT_SIZE);
         
         renderBorder();
         renderPieces();
+    }
+    
+    public void renderSelect(int row, int col) {
+        gc.setFill(SELECT);
+//        gc.setLineWidth(BORDER_SIZE);
+        gc.fillRect(RECT_SIZE * col, RECT_SIZE * row, RECT_SIZE, RECT_SIZE);
+        renderBorder();
+//        renderPieces();
+        renderPiece(z, row, col);
     }
     
     public void renderBoard() {
@@ -60,7 +71,7 @@ public class Board extends Canvas {
         renderPieces();
     }
     
-    private void renderTiles() {
+    public void renderTiles() {
         for (int row = 0; row < 8; row++)
             for (int col = 0; col < 8; col++) {
                 gc.setFill((row + col) % 2 == 0 ? LIGHT : DARK);
@@ -68,31 +79,37 @@ public class Board extends Canvas {
             }
     }
     
-    private void renderPieces() {
+    public void renderPieces() {
         for (ChessPiece[] pieceRow : pieces)
             for (ChessPiece piece : pieceRow)
                 if (piece != null)
-                    gc.drawImage(piece.getImg(), piece.getCol() * RECT_SIZE, piece.getRow() * RECT_SIZE);
+                    renderPiece(piece.getZ(), piece.getRow(), piece.getCol());
     }
     
-    private void renderBorder() {
+    public void renderPiece(int z, int row, int col) {
+        ChessPiece piece = pieces[row][col];
+        if (pieces != null)
+            gc.drawImage(piece.getImg(), col * RECT_SIZE, row * RECT_SIZE);
+    }
+    
+    public void renderBorder() {
         gc.setStroke(BORDER);
-        gc.setLineWidth(8);
+        gc.setLineWidth(BORDER_SIZE);
         gc.strokeRect(0, 0, LENGTH, LENGTH);
     }
     
     public void initPieces(Player player) {
         int i = player.ordinal();
         for(int x = 0; x < 8; x++)
-            pieces[1 + 5 * i][x] = new Pawn(1 + 5 * i, x, z, player);
+            pieces[1 + 5 * i][x] = new Pawn(z, 1 + 5 * i, x, player);
         for(int j = 0; j < 2; j++)
-            pieces[7 * i][7 * j] = new Rook(7 * i, 7 * j, z, player);
+            pieces[7 * i][7 * j] = new Rook(z, 7 * i, 7 * j, player);
         for(int j = 0; j < 2; j++)
-            pieces[7 * i][1 + 5 * j] = new Knight(7 * i, 1 + 5 * j, z, player);
+            pieces[7 * i][1 + 5 * j] = new Knight(z, 7 * i, 1 + 5 * j, player);
         for(int j = 0; j < 2; j++)
-            pieces[7 * i][2 + 3 * j] = new Bishop(7 * i, 2 + 3 * j, z, player);
-        pieces[7 * i][3] = new Queen(7 * i, 3, z, player);
-        pieces[7 * i][4] = new King(7 * i, 4, z, player);
+            pieces[7 * i][2 + 3 * j] = new Bishop(z, 7 * i, 2 + 3 * j, player);
+        pieces[7 * i][3] = new Queen(z, 7 * i, 3, player);
+        pieces[7 * i][4] = new King(z, 7 * i, 4, player);
     }
     
     public int getZ() {

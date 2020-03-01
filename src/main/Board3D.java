@@ -8,11 +8,15 @@ public class Board3D {
     public static final int NUM_BOARDS = 3;
     
     private Board[] boards;
+    private ChessPiece[][][] pieces;
     
     public Board3D() {
         boards = new Board[NUM_BOARDS];
+        pieces = new ChessPiece[NUM_BOARDS][8][8];
+        
         for (int i = 0; i < NUM_BOARDS; i++) {
             boards[i] = new Board(i);
+            pieces[i] = boards[i].getPieces();
         }
         
         boards[0].initPieces(Player.WHITE);
@@ -39,8 +43,12 @@ public class Board3D {
         return boards[i];
     }
     
+    public ChessPiece[][][] getPieces() {
+        return pieces;
+    }
+    
     public ChessPiece[][] getPieces(int i) {
-        return getBoard(i).getPieces();
+        return pieces[i];
     }
     
     public void render() {

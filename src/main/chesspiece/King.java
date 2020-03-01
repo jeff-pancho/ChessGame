@@ -9,5 +9,24 @@ public class King extends ChessPiece {
         super(z, row, col, player);
         this.img = player == Player.WHITE ? Board.wKing : Board.bKing;
     }
+    
+    @Override
+    public boolean[][][] calcMoves(ChessPiece[][][] pieces) {
+        boolean[][][] validMoves = new boolean[3][8][8];
+        
+        for (int i = 0; i < 8; i++) {
+            for (int zStep = -1 ; zStep <= 1; zStep++) {
+                double dir = Math.PI / 4 * i;
+                int newRow = (int) Math.round(row + Math.sin(dir));
+                int newCol = (int) Math.round(col + Math.cos(dir));
+                int newZ = z + zStep;
+                
+                if (isValid(newZ, newRow, newCol, pieces))
+                    validMoves[newZ][newRow][newCol] = true;
+            }
+        }
+        
+        return validMoves;
+    }
 
 }

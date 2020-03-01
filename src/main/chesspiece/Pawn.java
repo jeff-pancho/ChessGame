@@ -11,13 +11,38 @@ public class Pawn extends ChessPiece {
         this.img = player == Player.WHITE ? Board.wPawn : Board.bPawn;
     }
     
-//    @Override
-//    public void setPos(int row, int col, ChessPiece[][] lastBoard, ChessPiece[][] newBoard) {
-//        lastBoard[this.row][this.col] = null;
-//        this.row = row;
-//        this.col = col;
-//        newBoard[row][col] = this;
-//        firstMove = false;
-//    }
+    @Override
+    public boolean[][][] calcMoves(ChessPiece[][][] pieces) {
+        boolean[][][] validMoves = new boolean[3][8][8];
+        
+        int numSteps = firstMove ? 2 : 1;
+        int direction = player.ordinal() * -2 + 1;
+        
+        for (int zStep = -1 ; zStep <= 1; zStep++) {
+            int newZ = z;
+            
+            for (int steps = 1; steps <= numSteps; steps++) {
+                System.out.println(steps);
+                int newRow = row + direction * steps;
+                newZ += zStep;
+                if (isValid(newZ, newRow, col, pieces))
+                    validMoves[newZ][newRow][col] = true;
+                else
+                    break;
+            }
+        }
+        
+        return validMoves;
+    }
+    
+    @Override
+    public void setPos(int z, int row, int col, ChessPiece[][][] pieces) {
+        pieces[this.z][this.row][this.col] = null;
+        this.z = z;
+        this.row = row;
+        this.col = col;
+        pieces[z][row][col] = this;
+        firstMove = false;
+    }
 
 }

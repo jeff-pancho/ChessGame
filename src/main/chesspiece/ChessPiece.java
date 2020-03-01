@@ -25,22 +25,18 @@ public abstract class ChessPiece {
         pieces[z][row][col] = this;
     }
     
-//    public abstract boolean[][] calcMoves();
-    public boolean[][][] calcMoves(ChessPiece[][][] pieces) {
-        boolean[][][] validMoves = new boolean[3][8][8];
-        for (boolean[][] z : validMoves)
-            for (boolean[] y : z)
-                for (int i = 0; i < 8; i++)
-                    y[i] = true;
-        return validMoves;
-    }
+    public abstract boolean[][][] calcMoves(ChessPiece[][][] pieces);
     
     protected boolean isPastBoundary(int z, int row, int col) {
         return row < 0 || row > 7 || col < 0 || col > 7 || z < 0 || z > 2;
     }
     
-    protected boolean isOccupied(ChessPiece[][][] pieces, int z, int row, int col) {
+    protected boolean isOccupied(int z, int row, int col, ChessPiece[][][] pieces) {
         return pieces[z][row][col] != null;
+    }
+    
+    protected boolean isValid(int z, int row, int col, ChessPiece[][][] pieces) {
+        return !isPastBoundary(z, row, col) && !isOccupied(z, row, col, pieces);
     }
     
     public int getRow() {

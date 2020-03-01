@@ -25,14 +25,18 @@ public class Board3D {
         box.setAlignment(Pos.CENTER);
         
         for (Board b : boards) {
-            box.getChildren().add(b.getCanvas());
+            box.getChildren().add(b);
         }
         
         return box;
     }
     
+    public Board getBoard(int i) {
+        return boards[i];
+    }
+    
     public ChessPiece[][] getPieces(int i) {
-        return boards[i].getPieces();
+        return getBoard(i).getPieces();
     }
     
     public void render() {

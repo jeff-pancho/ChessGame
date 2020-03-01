@@ -6,6 +6,7 @@ import main.Player;
 public abstract class ChessPiece {
     protected int row;
     protected int col;
+    protected int z;
     protected Image img;
     protected Player player;
     

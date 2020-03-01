@@ -3,7 +3,6 @@ package main;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import main.chesspiece.Bishop;
 import main.chesspiece.ChessPiece;
@@ -13,9 +12,9 @@ import main.chesspiece.Pawn;
 import main.chesspiece.Queen;
 import main.chesspiece.Rook;
 
-public class Board {
+public class Board extends Canvas {
     public static final int RECT_SIZE = 75;
-    public static final int BOARD_LENGTH = RECT_SIZE * 8;
+    public static final int LENGTH = RECT_SIZE * 8;
     
     public static final Color DARK = Color.rgb(93, 100, 110);
     public static final Color LIGHT = Color.rgb(255, 255, 255);
@@ -29,7 +28,6 @@ public class Board {
         initImages();
     }
     
-    private Canvas canvas;
     private GraphicsContext gc;
     
     ChessPiece[][] pieces;
@@ -38,19 +36,15 @@ public class Board {
     private int z;
     
     public Board(int z) {
-        this.canvas = new Canvas(BOARD_LENGTH, BOARD_LENGTH);
-        this.gc = canvas.getGraphicsContext2D();
+        super(LENGTH, LENGTH);
+//        this.canvas = new Canvas(LENGTH, LENGTH);
+        this.gc = getGraphicsContext2D();
         this.z = z;
         this.pieces = new ChessPiece[8][8];
         
-        canvas.setOnMouseMoved(this::handleMove);
-        canvas.setOnMouseExited(this::renderBoard);
     }
     
-    private void handleMove(MouseEvent e) {
-        int row = (int) e.getY() / RECT_SIZE;
-        int col = (int) e.getX() / RECT_SIZE;
-        
+    public void renderSelect(int row, int col) {
         renderTiles();
         
         gc.setFill(SELECT);
@@ -58,11 +52,6 @@ public class Board {
         
         renderBorder();
         renderPieces();
-    }
-    
-    // I'm sorry.
-    public void renderBoard(MouseEvent e) {
-        renderBoard();
     }
     
     public void renderBoard() {
@@ -89,7 +78,7 @@ public class Board {
     private void renderBorder() {
         gc.setStroke(BORDER);
         gc.setLineWidth(8);
-        gc.strokeRect(0, 0, BOARD_LENGTH, BOARD_LENGTH);
+        gc.strokeRect(0, 0, LENGTH, LENGTH);
     }
     
     public void initPieces(Player player) {
@@ -108,10 +97,6 @@ public class Board {
     
     public ChessPiece[][] getPieces() {
         return this.pieces;
-    }
-    
-    public Canvas getCanvas() {
-        return this.canvas;
     }
     
     private static void initImages() {

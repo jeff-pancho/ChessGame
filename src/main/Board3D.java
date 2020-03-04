@@ -5,27 +5,27 @@ import javafx.scene.layout.HBox;
 import main.chesspiece.ChessPiece;
 
 public class Board3D {
-    public static final int NUM_BOARDS = 3;
+//    public static final int NUM_BOARDS = 3;
     
     private Board[] boards;
     private ChessPiece[][][] pieces;
     
     public Board3D() {
-        boards = new Board[NUM_BOARDS];
-        pieces = new ChessPiece[NUM_BOARDS][8][8];
+        boards = new Board[Game.numBoards];
+        pieces = new ChessPiece[Game.numBoards][8][8];
         
-        for (int i = 0; i < NUM_BOARDS; i++) {
+        for (int i = 0; i < Game.numBoards; i++) {
             boards[i] = new Board(i);
             pieces[i] = boards[i].getPieces();
         }
         
         boards[0].initPieces(Player.WHITE);
-        boards[2].initPieces(Player.BLACK);
+        boards[boards.length - 1].initPieces(Player.BLACK);
     }
     
     public HBox getHBox() {
         HBox box = new HBox(8);
-        box.setPrefSize(Game.WIDTH, Game.HEIGHT);
+        box.setPrefSize(Game.width, Game.HEIGHT);
         box.setAlignment(Pos.CENTER);
         
         for (Board b : boards) {
@@ -52,7 +52,7 @@ public class Board3D {
     }
     
     public void render() {
-        for (int i = 0; i < NUM_BOARDS; i++)
+        for (int i = 0; i < Game.numBoards; i++)
             renderBoard(i);
     }
     

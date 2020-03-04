@@ -1,6 +1,7 @@
 package main.chesspiece;
 
 import javafx.scene.image.Image;
+import main.Game;
 import main.Player;
 
 public abstract class ChessPiece {
@@ -28,7 +29,7 @@ public abstract class ChessPiece {
     public abstract boolean[][][] calcMoves(ChessPiece[][][] pieces);
     
     protected boolean isPastBoundary(int z, int row, int col) {
-        return row < 0 || row > 7 || col < 0 || col > 7 || z < 0 || z > 2;
+        return row < 0 || row > 7 || col < 0 || col > 7 || z < 0 || z > Game.numBoards - 1;
     }
     
     protected boolean isOccupied(int z, int row, int col, ChessPiece[][][] pieces) {

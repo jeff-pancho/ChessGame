@@ -1,6 +1,7 @@
 package main.chesspiece;
 
 import main.Board;
+import main.Game;
 import main.Player;
 
 public class King extends ChessPiece {
@@ -12,7 +13,7 @@ public class King extends ChessPiece {
     
     @Override
     public boolean[][][] calcMoves(ChessPiece[][][] pieces) {
-        boolean[][][] validMoves = new boolean[3][8][8];
+        boolean[][][] validMoves = new boolean[Game.numBoards][8][8];
         
         for (int i = 0; i < 8; i++) {
             for (int zStep = -1 ; zStep <= 1; zStep++) {

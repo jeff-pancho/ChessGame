@@ -8,8 +8,11 @@ import main.chesspiece.ChessPiece;
 
 public class Game extends Application {
     public static final int PADDING = 8;
-    public static final int WIDTH = Board.RECT_SIZE * 24 + PADDING * 4;
+//    public static final int WIDTH = Board.RECT_SIZE * 24 + PADDING * 4;
+    public static int width;
     public static final int HEIGHT = Board.RECT_SIZE * 8 + PADDING * 2;
+    
+    public static int numBoards;
     
     private Board3D board3d;
     
@@ -21,8 +24,8 @@ public class Game extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         board3d = new Board3D();
-        validMoves = new boolean[3][8][8];
-        Scene scene = new Scene(board3d.getHBox(), WIDTH, HEIGHT, Board.BORDER);
+        validMoves = new boolean[numBoards][8][8];
+        Scene scene = new Scene(board3d.getHBox(), width, HEIGHT, Board.BORDER);
         curPlayer = Player.WHITE;
         
         
@@ -63,7 +66,7 @@ public class Game extends Application {
                 curPlayer = curPlayer == Player.WHITE ? Player.BLACK : Player.WHITE;
             }
             curPiece = null;
-            validMoves = new boolean[3][8][8];
+            validMoves = new boolean[numBoards][8][8];
             board3d.render();
             srcBoard.renderMouseLocation(row, col);
             srcBoard.renderPieces();
@@ -72,7 +75,7 @@ public class Game extends Application {
     
     private void renderValidMoves() {
         Board[] boards = board3d.getBoards();
-        for (int i = 0; i < Board3D.NUM_BOARDS; i++) {
+        for (int i = 0; i < numBoards; i++) {
             boards[i].renderValidMoves(validMoves[i]);
             boards[i].renderPieces();
         }
@@ -124,7 +127,9 @@ public class Game extends Application {
         stage.show();
     }
     
-    public void run() {
+    public void run(int num) {
+        numBoards = num;
+        width = Board.RECT_SIZE * (8 * numBoards) + PADDING * 4;
         launch();
     }
 

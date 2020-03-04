@@ -54,4 +54,8 @@ public abstract class ChessPiece {
     public Image getImg() {
         return this.img;
     }
+    
+    public Player getPlayer() {
+        return this.player;
+    }
 }

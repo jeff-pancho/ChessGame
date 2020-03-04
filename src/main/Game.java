@@ -15,12 +15,15 @@ public class Game extends Application {
     
     private ChessPiece curPiece;
     private boolean[][][] validMoves;
+    
+    private Player curPlayer;
 
     @Override
     public void start(Stage stage) throws Exception {
         board3d = new Board3D();
         validMoves = new boolean[3][8][8];
         Scene scene = new Scene(board3d.getHBox(), WIDTH, HEIGHT, Board.BORDER);
+        curPlayer = Player.WHITE;
         
         
         initStage(stage, scene);
@@ -47,16 +50,18 @@ public class Game extends Application {
         int col = (int) e.getX() / Board.RECT_SIZE;
         
         if (curPiece == null) {
-            if((curPiece = srcBoard.getPiece(row, col)) != null) {
+            if((curPiece = srcBoard.getPiece(row, col)) != null && curPlayer == curPiece.getPlayer()) {
                 validMoves = curPiece.calcMoves(board3d.getPieces());
                 renderValidMoves();
-                
                 srcBoard.renderSelect(row, col);
                 srcBoard.renderPiece(row, col);
-            }
+            } else 
+                curPiece = null;
         } else {
-            if (validMoves[z][row][col])
+            if (validMoves[z][row][col]) {
                 curPiece.setPos(z, row, col, board3d.getPieces());
+                curPlayer = curPlayer == Player.WHITE ? Player.BLACK : Player.WHITE;
+            }
             curPiece = null;
             validMoves = new boolean[3][8][8];
             board3d.render();

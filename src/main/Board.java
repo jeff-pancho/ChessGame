@@ -13,7 +13,7 @@ import main.chesspiece.Queen;
 import main.chesspiece.Rook;
 
 public class Board extends Canvas {
-    public static final int RECT_SIZE = 75;
+    public static final int RECT_SIZE = 50;
     public static final int LENGTH = RECT_SIZE * 8;
     public static final int BORDER_SIZE = 8;
     
